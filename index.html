@@ -1,0 +1,48 @@
+<div class="both-center">
+    <h1>
+        <div id="spiciness">???</div>
+    </h1>
+    <h2>
+        <div id="maxkp">???</div>
+    </h2>
+</div>
+<style>
+    * {
+        font-family: Arial, sans-serif;
+    }
+
+    .both-center {
+        margin: 0;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        -ms-transform: translate(-50%, -50%);
+        transform: translate(-50%, -50%);
+    }
+</style>
+<script>
+    function getSpicinessLevel(x) {
+        if (x < 5) {
+            return "Space is not spicy today 🍰";
+        } else if (x < 7) {
+            return "Space is getting spicy 🫑";
+        } else if (x < 8) {
+            return "Space is spicy today 🌶";
+        } else if (x < 9) {
+            return "Space is extra spicy today 🔥";
+        } else if (x >= 9) {
+            return "This is fine 🫠";
+        } else {
+            return "Undefined";
+        }
+    }
+    let kpurl = "https://services.swpc.noaa.gov/products/noaa-planetary-k-index.json";
+    async function display() {
+        let kpdata = await (await fetch(kpurl)).json();
+        maxkp = Math.max(...kpdata.slice(-7).map(row => parseFloat(row[1])));
+        spiciness = getSpicinessLevel(maxkp);
+        document.getElementById("maxkp").innerHTML = "Max Kp = " + maxkp;
+        document.getElementById("spiciness").innerHTML = spiciness;
+    }
+    display();
+</script>
