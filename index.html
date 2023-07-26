@@ -1,48 +1,86 @@
-<div class="both-center">
-    <h1>
-        <div id="spiciness">???</div>
-    </h1>
-    <h2>
-        <div id="maxkp">???</div>
-    </h2>
-</div>
-<style>
-    * {
-        font-family: Arial, sans-serif;
-    }
+<!DOCTYPE html>
+<html>
 
-    .both-center {
-        margin: 0;
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        -ms-transform: translate(-50%, -50%);
-        transform: translate(-50%, -50%);
-    }
-</style>
-<script>
-    function getSpicinessLevel(x) {
-        if (x < 5) {
-            return "Space is not spicy today 🍰";
-        } else if (x < 7) {
-            return "Space is getting spicy 🫑";
-        } else if (x < 8) {
-            return "Space is spicy today 🌶";
-        } else if (x < 9) {
-            return "Space is extra spicy today 🔥";
-        } else if (x >= 9) {
-            return "This is fine 🫠";
-        } else {
-            return "Undefined";
+<head>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@300&display=swap" rel="stylesheet">
+    <style>
+        .small-title-bar {
+            position: absolute;
+            left: 1%;
+            top: 0.5%;
+            font-size: 0.6em;
+            font-family: 'Lato', sans-serif;
+            color: #808080;
         }
-    }
-    let kpurl = "https://services.swpc.noaa.gov/products/noaa-planetary-k-index.json";
-    async function display() {
-        let kpdata = await (await fetch(kpurl)).json();
-        maxkp = Math.max(...kpdata.slice(-7).map(row => parseFloat(row[1])));
-        spiciness = getSpicinessLevel(maxkp);
-        document.getElementById("maxkp").innerHTML = "Max Kp = " + maxkp;
-        document.getElementById("spiciness").innerHTML = spiciness;
-    }
-    display();
-</script>
+
+        .both-center {
+            margin: 0;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            font-family: Arial, sans-serif;
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+        }
+
+        .citation {
+            position: absolute;
+            /* Absolute positioning relative to the nearest positioned ancestor (body in this case) */
+            bottom: 0;
+            /* Position at the bottom */
+            width: 100%;
+            /* Take the full width */
+            text-align: center;
+            /* Center the text */
+            font-size: 0.8em;
+            padding: 10px 0;
+            /* Some padding to lift the text a bit from the bottom */
+        }
+    </style>
+</head>
+
+<body>
+    <div class="small-title-bar">
+        <h1>Is Space Spicy Today?</h1>
+    </div>
+    <div class="both-center">
+        <h1>
+            <div id="spiciness">???</div>
+        </h1>
+        <h2>
+            <div id="maxkp">???</div>
+        </h2>
+    </div>
+    <div class="citation">
+        <a href="https://www.swpc.noaa.gov/products/planetary-k-index" target="_blank">Data sourced from NOAA's Space
+            Weather Prediction Center</a>
+    </div>
+    <script>
+        function getSpicinessLevel(x) {
+            if (x < 5) {
+                return "Space is not spicy today 🍰";
+            } else if (x < 7) {
+                return "Space is getting spicy 🫑";
+            } else if (x < 8) {
+                return "Space is spicy today 🌶";
+            } else if (x < 9) {
+                return "Space is extra spicy today 🔥";
+            } else if (x >= 9) {
+                return "This is fine 🫠";
+            } else {
+                return "Undefined";
+            }
+        }
+        let kpurl = "https://services.swpc.noaa.gov/products/noaa-planetary-k-index.json";
+        async function display() {
+            let kpdata = await (await fetch(kpurl)).json();
+            maxkp = Math.max(...kpdata.slice(-7).map(row => parseFloat(row[1])));
+            spiciness = getSpicinessLevel(maxkp);
+            document.getElementById("maxkp").innerHTML = "Max Kp = " + maxkp;
+            document.getElementById("spiciness").innerHTML = spiciness;
+        }
+        display();
+    </script>
+</body>
+
+</html>
